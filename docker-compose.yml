@@ -1,0 +1,12 @@
+version: "3.10"
+
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ./:/app
+    ports:
+      - 8888:8888
+    environment:
+      - PYTHONPATH=/app/src/

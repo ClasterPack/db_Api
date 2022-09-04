@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "test api for db"
+version = "0.1.0"
+description = ""
+authors = ["Artem Tolstopyatov <clasterpack@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = "^3.8.0"
+webargs = "^8.0.1"
+marshmallow = "^3.14.0"
+marshmallow-dataclass = "^8.5.3"
+PyYAML = "^6.0"
+aiohttp_cors = "^0.7.0"
+PyJWT = "^2.4.0"
+pytest = {version = "^6.2", optional = true}
+pytest-aiohttp = {version = "^0.3", optional = true}
+pytest-asyncio = {version = "^0.16", optional = true}
+pytest-mock = {version = "^3.6", optional = true}
+aioresponses = {version = "^0.7.2", optional = true}
+setuptools = "^65.3.0"
+
+[tool.poetry.dev-dependencies]
+wemake-python-styleguide = "^0.15.3"
+apispec = "^5.1.1"
+
+[tool.poetry.extras]
+tests = ["pytest", "pytest-asyncio", "pytest-aiohttp", "pytest-mock", "aioresponses"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

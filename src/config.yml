@@ -1,0 +1,28 @@
+service:
+  name: 'Test API for DB'
+  version: 0.0.1
+  port: 8888
+client:
+  timeout: 2
+logging:
+  version: 1
+  formatters:
+    console-formatter:
+      format: '%(asctime)s.%(msecs)03d  %(levelname)-8s %(name)-15s %(funcName)-30s %(message)s'
+      datefmt: '%H:%M:%S'
+  handlers:
+    console:
+      class: 'logging.StreamHandler'
+      level: 'DEBUG'
+      stream: 'ext://sys.stdout'
+      formatter: 'console-formatter'
+  root:
+    level: 'DEBUG'
+    handlers:
+      - 'console'
+  disable_existing_loggers: false
+db: 'db/New_DB'
+jwt:
+  secret: 'Буква Ю'
+  algorithm: 'HS256'
+  exp_days: 10
