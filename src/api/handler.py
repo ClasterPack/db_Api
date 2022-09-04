@@ -36,16 +36,18 @@ async def msg_listener(request: web.Request) -> web.Response:
         req=request,
         location='json',
     )
-    token = request.headers.get('Bearer')
-    valid_jwt = controller().verify_bearer_token(token)
+    header = request.headers.get('Authorization')
+    if header.startswith('Bearer_'):
+        token = request.headers.get('Authorization')[7:]
+    else:
+        token = None
+    valid_jwt = controller().verify_bearer_token(token, msg_request.name)
     message = msg_request.message
     if valid_jwt:
         if message == 'history 10':
             msg_response = ListenerResponse(
                 is_saved=controller().msg_history(msg_request.name)
             )
-            print(msg_response)
-
         else:
             msg_response = ListenerResponse(
                 is_saved=controller().save_msg(msg_request.name, msg_request.message)

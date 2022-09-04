@@ -50,11 +50,14 @@ class UsersAuth:
         except jwt.exceptions.ExpiredSignatureError as e:
             return e
 
-    def verify_bearer_token(self, token):
-        payload = jwt.decode(token, self.secret, algorithms=[self.algorithm])
-        if payload:
-            return True
-        return False
+    def verify_bearer_token(self, token, name):
+        try:
+            payload = jwt.decode(token, self.secret,
+                                 algorithms=[self.algorithm])
+            if payload['name'] == name:
+                return True
+        except (jwt.DecodeError, jwt.ExpiredSignatureError):
+            return False
 
     def save_msg(self, username, msg):
         try:
@@ -66,8 +69,10 @@ class UsersAuth:
             conn.commit()
             cursor.close()
             return True
+
         except Exception as e:
-            return e
+            print(e)
+            return False
 
     def msg_history(self, username):
         try:
