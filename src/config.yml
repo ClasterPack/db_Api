@@ -25,4 +25,4 @@ db: 'db/New_DB'
 jwt:
   secret: 'Буква Ю'
   algorithm: 'HS256'
-  exp_days: 10
+  exp_days: 30

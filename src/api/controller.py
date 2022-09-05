@@ -45,7 +45,8 @@ class UsersAuth:
                 # Передаваемые данные.
                 'name': name,
             }
-            return jwt.encode(payload, self.secret, algorithm=self.algorithm)
+            token = jwt.encode(payload, self.secret, algorithm=self.algorithm)
+            return token
         except jwt.exceptions.ExpiredSignatureError as ex:
             return ex
 

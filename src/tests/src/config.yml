@@ -21,8 +21,8 @@ logging:
     handlers:
       - 'console'
   disable_existing_loggers: false
-db: 'db/New_DB'
+db: 'New_DB'
 jwt:
   secret: 'Буква Ю'
   algorithm: 'HS256'
-  exp_days: 10
+  exp_days: 999999
