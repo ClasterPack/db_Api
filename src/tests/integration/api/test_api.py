@@ -5,7 +5,10 @@ good_headers = {
     'Authorization': 'Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjI0Mzk5ODI1NzIsImlhdCI6MTY2MjM4MjU3MiwiaXNzIjoiemtrIiwibmFtZSI6InVzZXIifQ.rleKnAXPsqH-PkVGiYH3KKbRuLOCzdJxO9ygFrnmim8',
     'Content-Type': 'application/json',
 }
-
+bad_headers = {
+    'Bearer': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjI0Mzk5ODI1NzIsImlhdCI6MTY2MjM4MjU3MiwiaXNzIjoiemtrIiwibmFtZSI6InVzZXIifQ.rleKnAXPsqH-PkVGiYH3KKbRuLOCzdJxO9ygFrnmim8',
+    'Content-Type': 'application/json',
+}
 
 async def test_get_token(cli, mock_resp):
     resp = await cli.post('/', json={
@@ -42,7 +45,7 @@ async def test_failed_authorization_wrong_data(cli, mock_resp):
 
 
 async def test_not_saved_msg(cli, mock_resp):
-    resp = await cli.post('/msg', json={
+    resp = await cli.post('/msg', headers=bad_headers, json={
         "name": "user",
         "message": "my test message",
     })
