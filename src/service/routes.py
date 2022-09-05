@@ -11,7 +11,6 @@ def setup_routes(app: Application):
             allow_credentials=True,
             expose_headers='*',
             allow_headers='*',
-
         ),
     })
 

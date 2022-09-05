@@ -10,7 +10,7 @@ from src.app import init_app
 @pytest.fixture(scope='session')
 def config():
     """Конфигурация сервиса в виде dict."""
-    return yaml.safe_load(Path('config.yml', ).read_text())
+    return yaml.safe_load(('src/config.yml', ).read_text())
 
 
 @pytest.fixture

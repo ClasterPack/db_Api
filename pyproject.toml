@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "test api for db"
 version = "0.1.0"
-description = ""
+description = "My test project for www.the-inside.info"
 authors = ["Artem Tolstopyatov <clasterpack@gmail.com>"]
 readme = "README.md"
 

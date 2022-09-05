@@ -11,9 +11,9 @@ class UsersAuth:
 
     def __init__(self):
         """Инициализация класса."""
-        config = yaml.safe_load(Path('src/config.yml').read_text())
-        """Считываем ключь и алгоритм с конфига(config.yml)."""
-        self.secret = config["jwt"]['secret']
+        config = Path('src/config.yml').read_text()
+        config = yaml.safe_load(config)
+        self.secret = config['jwt']['secret']
         self.algorithm = config['jwt']['algorithm']
         self.expire_jwt = config['jwt']['exp_days']
         self.db = config['db']
@@ -22,15 +22,15 @@ class UsersAuth:
         """Функция проверки имени и пароля в БД."""
         conn = sqlite3.connect(self.db)
         cursor = conn.cursor()
-        result = cursor.execute('SELECT * FROM users WHERE name=? AND password=?',
-                              (name, password,)
-                              )
-        if result.fetchone() is None:
+        password_check = cursor.execute(
+            'SELECT * FROM users WHERE name=? AND password=?',
+            (name, password),
+        )
+        if password_check.fetchone() is None:
             conn.close()
             return False
-        else:
-            conn.close()
-            return True
+        conn.close()
+        return True
 
     def jwt_token(self, name):
         """Функция возвращает jwt токен."""
@@ -43,47 +43,53 @@ class UsersAuth:
                 # Эмитет токена."""
                 'iss': 'zkk',
                 # Передаваемые данные.
-                'name': name
+                'name': name,
             }
-            token = jwt.encode(payload, self.secret, algorithm=self.algorithm)
-            return token
-        except jwt.exceptions.ExpiredSignatureError as e:
-            return e
+            return jwt.encode(payload, self.secret, algorithm=self.algorithm)
+        except jwt.exceptions.ExpiredSignatureError as ex:
+            return ex
 
     def verify_bearer_token(self, token, name):
+        """Функция валидации токена."""
         try:
-            payload = jwt.decode(token, self.secret,
-                                 algorithms=[self.algorithm])
+            payload = jwt.decode(
+                token,
+                self.secret,
+                algorithms=[self.algorithm],
+            )
             if payload['name'] == name:
                 return True
         except (jwt.DecodeError, jwt.ExpiredSignatureError):
             return False
 
     def save_msg(self, username, msg):
+        """Функция сохраняет сообщения пользователя."""
         try:
             conn = sqlite3.connect(self.db)
             cursor = conn.cursor()
-            cursor.execute('INSERT INTO Messages (NAME, MESSAGE) VALUES( ?, ?);',
-                         (username, msg)
-                         )
+            cursor.execute(
+                'INSERT INTO Messages (NAME, MESSAGE) VALUES( ?, ?);',
+                (username, msg),
+            )
             conn.commit()
             cursor.close()
             return True
 
-        except Exception as e:
-            print(e)
-            return False
+        except Exception as ex:
+            return False, ex
 
     def msg_history(self, username):
+        """Функция возвращает историю сообщений пользователя."""
         try:
             conn = sqlite3.connect(self.db)
             cursor = conn.cursor()
-            cursor.execute('SELECT message FROM Messages WHERE name=? ORDER BY Message_id DESC LIMIT 10;',
-                         (username, ),
-                         )
+            cursor.execute(
+                'SELECT message FROM Messages WHERE name=? ORDER BY Message_id DESC LIMIT 10;',
+                (username,),
+            )
             history = cursor.fetchall()
             cursor.close()
             conn.close()
             return history
-        finally:
-            pass
+        except Exception as ex:
+            return ex

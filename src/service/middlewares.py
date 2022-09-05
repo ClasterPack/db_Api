@@ -26,7 +26,7 @@ async def _log_request_data_middleware(request: web.Request, handler) -> web.Str
 
 
 def build_middlewares():
-    """Создает мидлвари сервиса."""
+    """Возвращает мидлвари сервиса."""
     return (
         _log_request_data_middleware,
     )
